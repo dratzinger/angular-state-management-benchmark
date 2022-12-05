@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { addRows, updateRows } from './rows.repository';
+import { addRows, upsertRows } from './rows.repository';
 import { benchAdd, benchUpdates } from '../shared/utils/benchmark.util';
 
 @Component({
@@ -13,6 +13,6 @@ import { benchAdd, benchUpdates } from '../shared/utils/benchmark.util';
 export class TestComponent {
   start() {
     benchAdd(addRows);
-    benchUpdates(updateRows);
+    benchUpdates(upsertRows);
   }
 }

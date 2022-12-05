@@ -1,9 +1,9 @@
 import { createStore } from '@ngneat/elf';
 import {
-  withEntities,
-  selectAllEntities,
   addEntities,
-  updateEntities,
+  selectAllEntities,
+  upsertEntities,
+  withEntities,
 } from '@ngneat/elf-entities';
 import { Row, RowUpdate } from '../shared/model/row.model';
 
@@ -15,16 +15,10 @@ export function addRows(rows: Row[]) {
   store.update(addEntities(rows));
 }
 
-export function updateRow(id: Row['id'], row: Partial<Row>) {
-  store.update(updateEntities(id, row));
-}
-
-export function updateRows(updates: RowUpdate[]) {
-  updates.forEach((update) => {
-    const row = {
-      id: update.index,
-      [`item${update.column}`]: update.value,
-    };
-    updateRow(row.id, row);
-  });
+export function upsertRows(updates: RowUpdate[]) {
+  const rows = updates.map((u) => ({
+    id: u.index,
+    [`item${u.column}`]: u.value,
+  }));
+  store.update(upsertEntities(rows));
 }
